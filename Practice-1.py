@@ -1,14 +1,15 @@
 import random
 
-slovo = ['книга','месяц','ручка','шарик','олень','носок']
+slovo = ['книга','месяц','ручка','шарик','олень','носок', 'Возвращение', 'Недоперепил']
 m = True;
-5
 
 while m:
     
-    s = slovo[random.randrange(6)]
+    s = slovo[random.randrange(len(slovo) + 1)]
     t = {i: '0' for i in s}
+    
     l = input("Сложность (1, 2, 3)")
+    
     if l == '1':
         lives = 7
     elif l == '2':
@@ -41,6 +42,7 @@ while m:
         print('Looser !!!!')
     else:
         print('Угадал !!!!!')
+        
     m = int(input('Исчо? (да-1/нет-0) :'))
 
 # print(s, t)
