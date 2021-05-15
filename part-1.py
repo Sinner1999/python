@@ -1,5 +1,16 @@
-l = [1, 2, 3]
-m = l
-print(l)
-l[1] = 5
-print(m)
+import math
+
+def func(num):
+    
+    d = [2] + [i for i in range(3, num, 2)]
+    i = 0
+    
+    
+        #foreach ($a as $key=>$val) 
+         #   if ((($key % $i) == 0) and ($key >= ($i * $i)))
+          #      unset($a[$key]); 
+    return d
+
+d = func(204)
+
+print(d)
