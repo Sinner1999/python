@@ -23,7 +23,7 @@ class Point_3d(Point):
     
     def move_to(self, x = 0, y = 0, z = 0):
         self.z = z
-        super().moove_to(x, y)
+        super().move_to(x, y)
         
     def __repr__(self):
         s = super().__repr__()
