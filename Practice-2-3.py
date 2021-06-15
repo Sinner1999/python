@@ -1,4 +1,5 @@
 import abc
+import random
 
 class IShape(abc.ABC):
     '''Интерфейс для реализации геометрических фигур'''
@@ -23,10 +24,10 @@ class Circle(IShape):
         self.__rad = rad
     
     def get_perimeter(self):
-        return 2 * 3.14 * self.__rad
+        return round(2 * 3.14 * self.__rad, 2)
 
     def get_area(self):
-        return 3.14 * self.__rad ** 2
+        return round(3.14 * self.__rad ** 2, 2)
 
     def get_description(self):
         return f'Я  - круг с радиусом {self.__rad}.'
@@ -38,41 +39,63 @@ class Rectangle(IShape):
         self.__b = b
     
     def get_perimeter(self):
-        return (2 * self.__a) + (2 * self.__b)
+        return round((2 * self.__a) + (2 * self.__b), 2)
+
+    def get_a(self):
+        return self.__a
+    width = property(get_a)
 
     def get_area(self):
-        return self.__a * self.__b
+        return round(self.__a * self.__b, 2)
 
     def get_description(self):
         return f'Я  - прямоугольник со сторонами {self.__a} и {self.__b}.'
 
-class Square(IShape):
+class Square(Rectangle):
     def __init__(self, a):
-        self.__a = a
+        super().__init__(a, a)
     
-    def get_perimeter(self):
-        return 4 * self.__a
-
-    def get_area(self):
-        return self.__rad ** 2
-
     def get_description(self):
-        return f'Я  - квадрат со стороной {self.__a}.'
+        return f'Я  - квадрат со стороной {super().width}.'
 
 class Game:
-    import random
+    
+    @staticmethod
+    def __get_shape(fig):
+        if fig == 0:
+            f = Circle(random.randint(1, 50))
+        elif fig == 1:
+            f = Rectangle(random.randint(1, 50), random.randint(1, 50))
+        elif fig == 2:
+            f = Square(random.randint(1, 50))
+        return f
 
-    def get_shape(self):
-        pass
+    @staticmethod
+    def __calculate(fig):
+        print(fig.get_description())
+        s = input('Укажите мою площадь: ')
+        if s == str(fig.get_area()):
+            print('Угадал!')
+        else:
+            print(f'Не угадал! Площадь равна {fig.get_area()}')
+        p = input('Укажите мой периметр: ')
+        if p == str(fig.get_perimeter()):
+            print('Угадал!')
+        else:
+            print(f'Не угадал! Периметр равен {fig.get_perimeter()}')
 
-    def calculate(self):
-        pass
-
-    def run(self):
-        pass
-
-    def play(self):
-        self.run()
+    @classmethod
+    def __run(cls):
+        f = random.randrange(3)
+        cls.__calculate(cls.__get_shape(f))
 
 
-    # random.randrange(len(slovo) + 1)
+    @classmethod
+    def play(cls):
+        print('Привет! Мы геометрические фигуры и у нас есть 2 вопроса.')
+        while input('Поиграем ?  Y/N:').upper() == 'Y':
+            cls.__run()
+        else:
+            print('Спасибо за участие!!!')
+
+Game.play()
