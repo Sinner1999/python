@@ -17,3 +17,18 @@ class Node:
     def get_next(self):
         return self.__next
 
+
+class LinkedList:
+    def __init__(self):
+        self.__head = None
+
+    def is_empty(self):
+        return self.__head is None
+
+    def add(self, item):
+        node = Node(item)
+        node.set_next(self.__head)
+        self.__head = node
+
+    def size(self):
+        
