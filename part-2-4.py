@@ -21,26 +21,29 @@ class Node:
 class LinkedList:
     def __init__(self):
         self.__head = None
+        self.__tail = None
 
     def is_empty(self):
         return self.__head is None
 
     def add(self, item):
         node = Node(item)
+        if self.__tail is None:
+            self.__tail = node
         node.set_next(self.__head)
         self.__head = node
 
     def size(self):
         current = self.__head
         count = 0
-        while not current is None:
+        while current is not None:
             current = current.get_next()
             count +=1
         return count
 
     def search(self, item):
         current = self.__head
-        while not current is None:
+        while current is not None:
             if current.get_data() == item:
                 return True
             current = current.get_next()
@@ -51,7 +54,7 @@ class LinkedList:
             return '[]'
         current = self.__head
         out = '[' + str(current.get_data())
-        while not current.get_next() is None:
+        while current.get_next() is not None:
             current = current.get_next()
             out += ', ' + str(current.get_data())
         out += ']'
@@ -70,6 +73,34 @@ class LinkedList:
             prev = current
             current = current.get_next()
         return False 
+
+    def append(self, item):
+        node = Node(item)
+        if self.__head is None:
+            self.__head = node
+        current = self.__tail
+        current.set_next(node)
+        self.__tail = node
+        
+
+    def insert(self, item):
+        pass
+
+    def index(self, pos, item):
+        if self.__head is None:
+            return -1
+        current = self.__head
+        pos = 0
+        while current is not None:
+            if current.get_data() == item:
+                return pos
+            current = current.get_next()
+            pos += 1
+        return False
+
+    def pop(self):
+        pass
+
 
 
 ml = LinkedList()
