@@ -22,17 +22,20 @@ class Stack:
         return len(self.__data)
 
     def show(self):
-        print('\n'.join(str(val) for val in self.__data))
+        print(', '.join(str(val) for val in self.__data))
 
 
 def trains(s):
     st1 = Stack()
     st2 = Stack()
     st_z = Stack()
+    s = s[::-1]
 
     for i in s.split(" "):
         print(i)
         st1.push(int(i))
+    
+    
     st_z.push(st1.pop())
     while True:
         
@@ -40,6 +43,7 @@ def trains(s):
         if st2.is_empty():
             if st_z.peek() == 1:
                 st2.push(st_z.pop())
+                print(f'in 2 === {st2.peek()}')
         else:
             if st_z.peek() == (st2.peek() + 1):
                 st2.push(st_z.pop())
@@ -51,7 +55,8 @@ def trains(s):
                 return "Невозможно"
         else: 
             st_z.push(st1.pop())
-        print(f'1 = {st1.peek()}, 2 = {st2.peek()}, z = {st_z.peek()}')
+
+        print(f'1 = {st1.show()}, 2 = {st2.show()}, z = {st_z.show()}')
 
     # return "Невозможно"
 
