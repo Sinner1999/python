@@ -26,39 +26,22 @@ class Stack:
 
 
 def trains(s):
-    st1 = Stack()
-    st2 = Stack()
-    st_z = Stack()
-    s = s[::-1]
+    dock = Stack()
+    needed = 1
+    train = list(map(int, s.split()))
 
-    for i in s.split(" "):
-        print(i)
-        st1.push(int(i))
-    
-    
-    st_z.push(st1.pop())
-    while True:
-        
-        # print(f'a = {st_z.peek()}')
-        if st2.is_empty():
-            if st_z.peek() == 1:
-                st2.push(st_z.pop())
-                print(f'in 2 === {st2.peek()}')
-        else:
-            if st_z.peek() == (st2.peek() + 1):
-                st2.push(st_z.pop())
-        # print(st2.peek())
-        if st1.is_empty():
-            if st_z.is_empty():
-                return "Выпонено"
-            elif st_z.peek() != (st2.peek() + 1):
-                return "Невозможно"
-        else: 
-            st_z.push(st1.pop())
+    for car in train:
+        dock.push(car)
+        while dock.size() > 0:
+            if dock.peek() == needed:
+                dock.pop()
+                needed += 1
+            else:
+                break
 
-        print(f'1 = {st1.show()}, 2 = {st2.show()}, z = {st_z.show()}')
-
-    # return "Невозможно"
-
-
+    if dock.is_empty():
+        return "Выполнено"
+    else:
+        return('Невозможно')
+  
 print(trains(input('Wagons :')))
