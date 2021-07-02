@@ -53,5 +53,6 @@ class DanceFloor:
             print (f'Мальчиков в очереди {self.__boys.size()} и первый из них - {self.__boys.front()}')
         elif self.__girls.size() > 0:
             print (f'Девочек в очереди {self.__girls.size()} и первая из них - {self.__girls.front()}')
-        else print ('Очереди нет')
+        else:
+            print ('Очереди нет')
 
