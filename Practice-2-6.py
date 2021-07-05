@@ -34,11 +34,11 @@ class InterpreterAbstract(abc.ABC):
         return self.__parse()
 
     @abc.abstractmethod
-    def __parse(self):
+    def _parse(self):
         pass
 
     @abc.abstractmethod
-    def __evaluate(self, code):
+    def _evaluate(self):
         pass
 
 class Interpreter(InterpreterAbstract):
@@ -48,21 +48,43 @@ class Interpreter(InterpreterAbstract):
         self.__oper = Stack()
 
     def execute(self):
-        return self.__parse()
+        return self._parse()
 
-    def __parse(self):
+    def _parse(self):
         nums = '0123456789'
         opers = '()+-*/^'
+
         for char in self.__code:
             if char == ')':
-                self.__evaluate()
+                self._evaluate()
+                print(')')
             else:
                 if char in nums:
-                    self.__nums.push(char)
+                    self.__nums.push(int(char))
                 elif char in opers:
                     self.__oper.push(char)
+        return self.__nums.pop()
         
+    def _evaluate(self):
+        a = self.__nums.pop()
+        while self.__oper.peek() != '(':
+            b = self.__nums.pop()
+            c = self.__oper.pop()
+            print(a, b)
+            if c =="+":
+                a = a + b
+            elif c =="-":
+                a = a - b
+            elif c =="*":
+                a = a * b
+            elif c =="/":
+                a = a // b
+            elif c =="^":
+                a = a ** b
+        c = self.__oper.pop()
+        self.__nums.push(a)
 
-    def __evaluate(self, code):
-        pass
-    
+
+
+inp = Interpreter('(1+2-(3*4)/(5^6+(7-8))*9)')
+print(inp.execute())
