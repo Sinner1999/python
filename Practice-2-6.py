@@ -62,6 +62,8 @@ class Interpreter(InterpreterAbstract):
         return self._out
 
     def _parse(self):
+        if self._validate():
+            raise ValueError('Что-то не то со скобками')
         nums = '0123456789'
         opers = '(+-*/^'
         if self.__code[0] != '(':
@@ -98,6 +100,18 @@ class Interpreter(InterpreterAbstract):
                 a = b ** a
         c = self.__oper.pop()
         self.__nums.push(a)
+
+    def _validate(self):
+        a = 0
+        for i in self.__code:
+            if i == '(':
+                a += 1
+            elif a == ')':
+                a -= 1
+        print(a)
+        return a
+        
+
 
 
 
