@@ -27,11 +27,12 @@ class Stack:
         print(', '.join(str(val) for val in self.__data))
 
 class InterpreterAbstract(abc.ABC):
-    def __init__(self, code):
+    def __init__(self, code, file):
         self.__code = code
+        self.__file = file
 
     def execute(self):
-        return self.__parse()
+        return self._parse()
 
     @abc.abstractmethod
     def _parse(self):
@@ -42,27 +43,41 @@ class InterpreterAbstract(abc.ABC):
         pass
 
 class Interpreter(InterpreterAbstract):
-    def __init__(self, code):
+    def __init__(self, code = None, file = None):
         self.__code = code
+        self.__file = file
         self.__nums = Stack()
         self.__oper = Stack()
+        self.__out = []
 
     def execute(self):
-        return self._parse()
+        if self.__code is not None:
+            self.__out.append(self._parse())
+        if self.__file is not None:
+            with open(self.__file, 'r', encoding='utf-8') as f:
+                for line in f:
+                    self.__code = line
+                    self.__out.append(self._parse())
+
+        return self._out
 
     def _parse(self):
         nums = '0123456789'
-        opers = '()+-*/^'
+        opers = '(+-*/^'
+        if self.__code[0] != '(':
+            self.__oper.push('(')
 
         for char in self.__code:
             if char == ')':
+                print(self.__oper.peek() +' )')
                 self._evaluate()
-                print(')')
             else:
                 if char in nums:
                     self.__nums.push(int(char))
                 elif char in opers:
                     self.__oper.push(char)
+        print(self.__oper.peek())
+        self._evaluate()
         return self.__nums.pop()
         
     def _evaluate(self):
@@ -70,21 +85,23 @@ class Interpreter(InterpreterAbstract):
         while self.__oper.peek() != '(':
             b = self.__nums.pop()
             c = self.__oper.pop()
-            print(a, b)
+            print(b, a)
             if c =="+":
-                a = a + b
+                a = b + a
             elif c =="-":
-                a = a - b
+                a = b - a
             elif c =="*":
-                a = a * b
+                a = b * a
             elif c =="/":
-                a = a // b
+                a = b // a
             elif c =="^":
-                a = a ** b
+                a = b ** a
         c = self.__oper.pop()
         self.__nums.push(a)
 
 
 
-inp = Interpreter('(1+2-(3*4)/(5^6+(7-8))*9)')
+# inp = Interpreter('(1+2-(3^4)/(5+6+(7-8))*9)')
+# inp = Interpreter('(1+((2+3)*(4*5)))')
+inp = Interpreter('2 + (dfhgdfgd ( 2 * 3 dhfjft) / ( 4 dhrtyhrt^ 5 )edrtedrt )  ')
 print(inp.execute())
