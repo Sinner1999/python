@@ -57,9 +57,10 @@ class Interpreter(InterpreterAbstract):
             with open(self.__file, 'r', encoding='utf-8') as f:
                 for line in f:
                     self.__code = line
+                    print(self.__code)
                     self.__out.append(self._parse())
 
-        return self._out
+        return self.__out
 
     def _parse(self):
         if self._validate():
@@ -68,6 +69,7 @@ class Interpreter(InterpreterAbstract):
         opers = '(+-*/^'
         if self.__code[0] != '(':
             self.__oper.push('(')
+            self.__code += ')' 
 
         for char in self.__code:
             if char == ')':
@@ -79,7 +81,7 @@ class Interpreter(InterpreterAbstract):
                 elif char in opers:
                     self.__oper.push(char)
         print(self.__oper.peek())
-        self._evaluate()
+        # self._evaluate()
         return self.__nums.pop()
         
     def _evaluate(self):
@@ -103,11 +105,13 @@ class Interpreter(InterpreterAbstract):
 
     def _validate(self):
         a = 0
-        for i in self.__code:
-            if i == '(':
+        for char in self.__code:
+            if char == '(':
                 a += 1
-            elif a == ')':
+                print(a)
+            elif char == ')':
                 a -= 1
+                print(a)
         print(a)
         return a
         
@@ -117,5 +121,5 @@ class Interpreter(InterpreterAbstract):
 
 # inp = Interpreter('(1+2-(3^4)/(5+6+(7-8))*9)')
 # inp = Interpreter('(1+((2+3)*(4*5)))')
-inp = Interpreter('2 + (dfhgdfgd ( 2 * 3 dhfjft) / ( 4 dhrtyhrt^ 5 )edrtedrt )  ')
+inp = Interpreter(code = '2 + (dfhgdfgd ( 2 * 3 dhfjft) / ( 4 dhrtyhrt^ 5 )edrtedrt )  ', file = 'code.txt')
 print(inp.execute())
